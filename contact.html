@@ -16,25 +16,26 @@
 <body>
   <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-black ">
-      <div class="container-fluid justify-content-between">
-        <a class="navbar-brand" href="#"><img
+      <div class="container-fluid justify-content-md-between justify-content-center ">
+        <a class="navbar-brand text-lg-start text-center" href="#"><img
             src="./assets/img/Logo_Amazing_Events.png" class="img-fluid w-25"
             alt="logo amazing events"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
         <div class=" collapse navbar-collapse " id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3 ">
+          <ul class="navbar-nav flex-row me-auto mb-2 mb-lg-0 gap-3 mt-lg-0 mt-3 flex-md-nowrap flex-wrap justify-content-center
+          ">
             <li class="nav-item">
               <a class="btn btn-outline-primary fw-bold" aria-current="page" href="./index.html">Home</a>
             </li>
             <li class="nav-item">
-               <a class="btn btn-outline-success fw-bold" text-nowrap "
+               <a class="btn btn-outline-success fw-bold text-nowrap "
                 aria-current="page" href="./upcomingEvents.html">Upcoming
                 Events</a>
             </li>
             <li class="nav-item">
-               <a class="btn btn-outline-success fw-bold" text-nowrap"
+               <a class="btn btn-outline-success fw-bold text-nowrap"
                 aria-current="page" href="./pastEvents.html">Past Events</a>
             </li>
             <li class="nav-item">
@@ -55,41 +56,51 @@
   <main>
 
     <div id="carouselExampleIndicators" class="carousel slide"
-      data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="0" class="active" aria-current="true"
-          aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="2" aria-label="Slide 3"></button>
+        data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="4" aria-label="Slide 5"></button>
+        </div>
+        <div class="carousel-inner">
+          <div id="carouselHome" class="carousel-item active bg-light">
+            <h2 class="display-2 text-center mb-5 ">HOME</h2>
+            
+          </div>
+          <div class="carousel-item">
+            <h2 class="display-2 text-center mb-5 ">UPCOMING EVENTS</h2>
+          </div>
+          <div class="carousel-item">
+            <h2 class="display-2 text-center mb-5 ">PAST EVENTS</h2>
+          </div>
+          <div class="carousel-item">
+            <h2 class="display-2 text-center mb-5 ">CONTACT</h2>
+          </div>
+          <div class="carousel-item">
+            <h2 class="display-2 text-center mb-5 ">STATS</h2>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button"
+          data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="false"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button"
+          data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="false"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active bg-light">
-          <h2 class="display-2 text-center mb-5 ">HOME</h2>
-          <!-- <img src="./assets/img/Cinema.jpg" class="d-block w-50 h-75" alt="..."> -->
-        </div>
-        <div class="carousel-item">
-          <h2 class="display-2 text-center mb-5 ">UPCOMING EVENTS</h2>
-        </div>
-        <div class="carousel-item">
-          <h2 class="display-2 text-center mb-5 ">PAST EVENTS</h2>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button"
-        data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button"
-        data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
 
-    <form class="row g-3 needs-validation d-flex flex-column justify-content-center align-items-center w-100 mt-3">
+    <form class="row g-3 needs-validation d-flex flex-column justify-content-center align-items-center w-100 m-3">
       <div class="col-md-6">
         <label for="validationCustom01" class="form-label">Name:</label>
         <input type="text" class="form-control" id="validationCustom01" placeholder="Mark" required>
