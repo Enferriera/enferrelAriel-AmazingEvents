@@ -23,7 +23,31 @@
    }
 
    #carouselHome{
-    background: url(../img/Cinema.jpg);
-    background-size: cover;
+    background: url(../img/slidHome.jpg);
+    background-size:cover;
+    background-position: top;
+   }
+
+   #carouselUpcoming{
+    background: url(../img/sliderUpcoming.jpg);
+    background-size:contain;
+    background-position:center ;
+   }
+
+   #carouselPast{
+    background: url(../img/sliderPast.jpg);
+    background-size:cover;
+    background-position: top;
+   }
+
+   #carouselContact{
+    background: url(../img/sliderContact.jpg);
+    background-size:cover;
+    background-position: center;
+   }
+
+   #carouselStats{
+    background: url(../img/slideStat.jpg);
+    background-size:cover;
     background-position: center;
    }
