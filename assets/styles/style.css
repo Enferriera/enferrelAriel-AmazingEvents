@@ -30,7 +30,7 @@
 
    #carouselUpcoming{
     background: url(../img/sliderUpcoming.jpg);
-    background-size:contain;
+    background-size:cover;
     background-position:center ;
    }
 
