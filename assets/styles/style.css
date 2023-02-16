@@ -64,4 +64,6 @@
    transition: transform 0.5s;
    }
 
-   
+   caption>p{
+    color:black;
+   }
