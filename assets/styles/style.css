@@ -1,0 +1,69 @@
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+
+  main {
+    min-height: 75vh;
+  }
+  footer {
+   
+    width: 100%;
+    min-height:10vh;
+   }
+
+   .bg-black{
+    background-color: black;
+   }
+
+   .border-circle{
+    border-radius: 50%;
+   }
+
+   #carouselHome{
+    background: url(../img/slidHome.jpg);
+    background-size:cover;
+    background-position: top;
+   }
+
+   #carouselUpcoming{
+    background: url(../img/sliderUpcoming.jpg);
+    background-size:cover;
+    background-position:center ;
+   }
+
+   #carouselPast{
+    background: url(../img/sliderPast.jpg);
+    background-size:cover;
+    background-position: top;
+   }
+
+   #carouselContact{
+    background: url(../img/sliderContact.jpg);
+    background-size:cover;
+    background-position: center;
+   }
+
+   #carouselStats{
+    background: url(../img/slideStat.jpg);
+    background-size:cover;
+    background-position: center;
+   }
+
+   
+
+   .color-btn{
+    background-color: rgb(255, 3, 150);
+   }
+
+   .color-btn:hover{
+    background-color: rgb(255, 0, 76);
+   transform: scale(1.2);
+   transition: transform 0.5s;
+   }
+
+   caption>p{
+    color:black;
+   }
