@@ -11,7 +11,7 @@ function cargarCardsUpcoming(fragmento, fechaRef){
       let cardDiv=document.createElement("div")
     cardDiv.classList.add("card", "mb-3")
     cardDiv.style.width="25rem"
-    cardDiv.innerHTML=`<img src=${card.image} class="card-img-top h-50 border-bottom" alt="...">
+    cardDiv.innerHTML=`<img src=${card.image} class="card-img-top h-50 border-bottom" alt=${card.name.split(" ").join("_")}>
     <div class="card-body d-flex flex-column bg-black">
       <h5 class="card-title text-white">${card.name}</h5>
      <p class="text-white">${card.description}</p>
