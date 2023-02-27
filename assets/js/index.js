@@ -1,6 +1,7 @@
 let conteinerCard=document.getElementById("cardHome")
 let fragment=document.createDocumentFragment()
-
+fragment=cargarCards(fragment)
+function cargarCards(fragmento){
 for(card of dataCards.events){
   let cardDiv=document.createElement("div")
   cardDiv.classList.add("card", "mb-3")
@@ -12,7 +13,8 @@ for(card of dataCards.events){
    <p class="text-white">$${card.price}</p>
     <a href="./details.html" class="btn text-white  color-btn align-self-end">Ver más</a>
   </div>`
-  fragment.appendChild(cardDiv)
+  fragmento.appendChild(cardDiv)
 }
-
+return fragmento
+}
 conteinerCard.appendChild(fragment)
