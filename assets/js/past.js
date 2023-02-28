@@ -1,15 +1,20 @@
 let fechaActual= new Date(dataCards.currentDate)
 let conteinerCard=document.getElementById("cardPast")
-let fragment=document.createDocumentFragment()
-fragment=cargarCardsPast(fragment, fechaActual)
-conteinerCard.appendChild(fragment)
+let pastCard=dataCards.events.filter(event=>comparaFecha(fechaActual,event))
+function comparaFecha(fechaActual,fechaEvento){
+  let fechaEvent= new Date(fechaEvento.date)
+  return fechaEvent<fechaActual
+}
+console.log(pastCard)
+
+let fragmentCard=document.createDocumentFragment()
+fragmentCard=cargarCardsPast(fragmentCard, pastCard)
+conteinerCard.appendChild(fragmentCard)
 
 
-function cargarCardsPast(fragmento , fechaRef){
-  for(card of dataCards.events){
-      let fechaEvento= new Date(card.date)
-  if(fechaRef>fechaEvento){
-      let cardDiv=document.createElement("div")
+function cargarCardsPast(fragmento , pastCard){
+  for(card of pastCard){
+     let cardDiv=document.createElement("div")
     cardDiv.classList.add("card", "mb-3")
     cardDiv.style.width="25rem"
     cardDiv.innerHTML=`<img src=${card.image} class="card-img-top h-50 border-bottom" alt=${card.name.split(" ").join("_")}>
@@ -20,7 +25,27 @@ function cargarCardsPast(fragmento , fechaRef){
       <a href="./details.html" class="btn text-white  color-btn align-self-end">Ver más</a>
     </div>`
     fragmento.appendChild(cardDiv)
-  }
+  
   }
   return fragmento
   }
+
+  let containerCheck=document.getElementById("pastCheck")
+let fragmentCheck=document.createDocumentFragment()
+
+
+fragmentCheck=cargarCheck(fragmentCheck,pastCard)
+containerCheck.appendChild(fragmentCheck)
+
+function cargarCheck(fragmento, pastCards){
+  for(check of pastCards){
+    let checkDiv=document.createElement("div")
+    checkDiv.classList.add("form-check", "form-check-inline")
+       checkDiv.innerHTML=`<input class="form-check-input" name="category" type="checkbox" id=${check.category.split(" ").join("_")}
+       value=${check.category.split(" ").join("_")}>
+     <label class="form-check-label" for=${check.category}>${check.category}</label>`
+    fragmento.appendChild(checkDiv)
+  }
+  return fragmento
+  }
+  

@@ -1,7 +1,8 @@
+//GENERAMOS LAS CARD 
 let conteinerCard=document.getElementById("cardHome")
-let fragment=document.createDocumentFragment()
-fragment=cargarCards(fragment)
-conteinerCard.appendChild(fragment)
+let fragmentCard=document.createDocumentFragment()
+fragmentCard=cargarCards(fragmentCard)
+conteinerCard.appendChild(fragmentCard)
 
 
 function cargarCards(fragmento){
@@ -20,3 +21,30 @@ for(card of dataCards.events){
 }
 return fragmento
 }
+
+//GENERAMOS LAS CATEGORYS
+let conteinerCheck=document.getElementById("containerCheck")
+let fragmentCheck=document.createDocumentFragment()
+
+
+let categorys=dataCards.events.map(event=>event.category)
+let categorysFiltradas=categorys.filter((valor, indice) => {
+  return categorys.indexOf(valor) === indice;
+})
+fragmentCheck=cargarCheck(fragmentCheck,categorysFiltradas)
+conteinerCheck.appendChild(fragmentCheck)
+console.log(categorysFiltradas)
+function cargarCheck(fragmento, categorias){
+  for(check of categorias){
+    let checkDiv=document.createElement("div")
+    checkDiv.classList.add("form-check", "form-check-inline")
+       checkDiv.innerHTML=`<input class="form-check-input" type="checkbox" name="category" id=${check.split(" ").join("_")}
+       value=${check.split(" ").join("_")}>
+     <label class="form-check-label" for=${check.split(" ").join("_")}>${check}</label>`
+    fragmento.appendChild(checkDiv)
+  }
+  return fragmento
+  }
+  
+
+  
