@@ -1,3 +1,4 @@
+//GENERAMOS LAS CARD FILTRANDO POR FECHA
 let fechaActual= new Date(dataCards.currentDate)
 let conteinerCard=document.getElementById("cardPast")
 let pastCard=dataCards.events.filter(event=>comparaFecha(fechaActual,event))
@@ -5,7 +6,7 @@ function comparaFecha(fechaActual,fechaEvento){
   let fechaEvent= new Date(fechaEvento.date)
   return fechaEvent<fechaActual
 }
-console.log(pastCard)
+
 
 let fragmentCard=document.createDocumentFragment()
 fragmentCard=cargarCardsPast(fragmentCard, pastCard)
@@ -30,7 +31,8 @@ function cargarCardsPast(fragmento , pastCard){
   return fragmento
   }
 
-  let containerCheck=document.getElementById("pastCheck")
+  //GENERAMOS LOS CHECK 
+let containerCheck=document.getElementById("pastCheck")
 let fragmentCheck=document.createDocumentFragment()
 
 
