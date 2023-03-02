@@ -14,6 +14,7 @@ conteinerCard.appendChild(cargarCards(pastCard))
 
 
 function cargarCards(pastCard){
+  conteinerCard.innerHTML=""
   let fragmento=document.createDocumentFragment()
   for(card of pastCard){
      let cardDiv=document.createElement("div")
@@ -97,32 +98,38 @@ let search=document.getElementById("search");
 
 botonSearch.addEventListener("click",function(e){
 e.preventDefault()
-
-if(checkeds.length>0){
-let cardChecked=pastCard.filter(event=>validaEvento(event,checkeds));
-let tituloCard=cardChecked.find(event=>event.name.toLowerCase()==search.value.toLowerCase())
-if(tituloCard==undefined){
- /* let p=document.createElement("p")
-  p.textContent="El titulo ingresado no existe"
-  conteinerCard.appendChild(p)*/
-  alert("El titulo ingresado no existe")
-}
-else{
-  conteinerCard.innerHTML=""
-conteinerCard.appendChild(cargarCards(cardChecked.filter(event=>event.name.toLowerCase()==search.value.toLowerCase())))
-}
-}else{
- 
-let tituloCard=pastCard.find(event=>event.name.toLowerCase()==search.value.toLowerCase())
-if(tituloCard==undefined){
- /* let p=document.createElement("p")
-  p.textContent="El titulo ingresado no existe"
-  conteinerCard.appendChild(p)*/
-  alert("El titulo ingresado no existe")
-}
-else{
-  conteinerCard.innerHTML=""
-conteinerCard.appendChild(cargarCards(pastCard.filter(event=>event.name.toLowerCase()==search.value.toLowerCase())))
-}
-}
+console.log("apretado")
+console.log(search.value)
+if(search.value!="") {
+  if (checkeds.length > 0) {
+    let cardChecked = pastCard.filter(event => validaEvento(event, checkeds));
+   // let tituloCard = cardChecked.find(event => event.name.toLowerCase().idexOf(search.value.toLowerCase())!=-1)
+   let tituloCard = cardChecked.find(event => event.name.toLowerCase().search(search.value.toLowerCase())!=-1)
+    if (tituloCard == undefined) {
+      /* let p=document.createElement("p")
+       p.textContent="El titulo ingresado no existe"
+       conteinerCard.appendChild(p)*/
+      alert("El titulo ingresado no existe")
+      conteinerCard.appendChild(cargarCards(cardChecked))
+    }
+    else {
+        conteinerCard.appendChild(cargarCards(cardChecked.filter(event => event.name.toLowerCase()==tituloCard.name.toLowerCase())))
+    }
+  } else {
+    let tituloCard = pastCard.find(event=> event.name.toLowerCase().search(search.value.toLowerCase())!=-1)
+    console.log(tituloCard)
+    //let tituloCard = pastCard.find(event => event.name.toLowerCase() == search.value.toLowerCase())
+    if (tituloCard == undefined) {
+      /* let p=document.createElement("p")
+       p.textContent="El titulo ingresado no existe"
+       conteinerCard.appendChild(p)*/
+      alert("El titulo ingresado no existe")
+      conteinerCard.appendChild(cargarCards(pastCard))
+    }
+    else {
+    conteinerCard.appendChild(cargarCards(pastCard.filter(event => event.name.toLowerCase() == tituloCard.name.toLowerCase())))
+    }
+  }}else{
+    alert("Debe ingresar algo para la busqueda")
+  }
 })
