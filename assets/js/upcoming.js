@@ -24,7 +24,7 @@ function cargarCards(upcomingCard,contenedor) {
       <h5 class="card-title text-white">${card.name}</h5>
      <p class="text-white">${card.description}</p>
      <p class="text-white">$${card.price}</p>
-      <a href="./details.html" class="btn text-white  color-btn align-self-end">Ver más</a>
+      <a href="./details.html?id=${card._id}" class="btn text-white  color-btn align-self-end">Ver más</a>
     </div>`
     fragmento.appendChild(cardDiv)
 

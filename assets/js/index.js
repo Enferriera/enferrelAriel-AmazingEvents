@@ -1,6 +1,6 @@
 //GENERAMOS LAS CARD 
 const conteinerCard=document.getElementById("cardHome")
-
+console.log(dataCards.events[0]._id)
 
 cargarCards(dataCards.events,conteinerCard)
 
@@ -18,7 +18,7 @@ for(card of events){
     <h5 class="card-title text-white">${card.name}</h5>
    <p class="text-white">${card.description}</p>
    <p class="text-white">$${card.price}</p>
-    <a href="./details.html" class="btn text-white  color-btn align-self-end">Ver más</a>
+    <a href="./details.html?id=${card._id}" class="btn text-white  color-btn align-self-end">Ver más</a>
   </div>`
   fragmento.appendChild(cardDiv)
 }
