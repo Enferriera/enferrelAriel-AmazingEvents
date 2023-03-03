@@ -9,10 +9,10 @@ function comparaFecha(fechaActual, fechaEvento) {
 
 
 
-conteinerCard.appendChild(cargarCards(upcomingCard))
+cargarCards(upcomingCard,conteinerCard)
 
 
-function cargarCards(upcomingCard) {
+function cargarCards(upcomingCard,contenedor) {
   conteinerCard.innerHTML = ""
   let fragmento = document.createDocumentFragment()
   for (card of upcomingCard) {
@@ -29,7 +29,7 @@ function cargarCards(upcomingCard) {
     fragmento.appendChild(cardDiv)
 
   }
-  return fragmento
+  contenedor.appendChild(fragmento)
 }
 
 //GENERAMOS LOS CHECK 
@@ -39,10 +39,11 @@ let categorysFilter = upcomingCard.map(event => event.category);
 categorysFilter = categorysFilter.filter((valor, indice) => {
   return categorysFilter.indexOf(valor) === indice;
 });
-fragmentCheck = cargarCheck(fragmentCheck, categorysFilter);
-containerCheck.appendChild(fragmentCheck);
+ cargarCheck(categorysFilter,containerCheck);
 
-function cargarCheck(fragmento, categorys) {
+
+function cargarCheck(categorys, contenedor) {
+  let fragmento=document.createDocumentFragment()
   for (check of categorys) {
     let checkDiv = document.createElement("div")
     checkDiv.classList.add("form-check", "form-check-inline")
@@ -51,35 +52,35 @@ function cargarCheck(fragmento, categorys) {
      <label class="form-check-label" for=${check}>${check}</label>`
     fragmento.appendChild(checkDiv)
   }
-  return fragmento
+  contenedor.appendChild(fragmento)
 }
 
 //hacemos filtrado con check
 let checkbox = document.querySelectorAll("input[type=checkbox]")
 let checkeds = []
-checkbox.forEach(categoria => {
-  categoria.addEventListener('change', function () {
+checkbox.forEach(categoria => 
+  categoria.addEventListener('change',filtrarCheck))
+  
+  function filtrarCheck(e) {
     if (this.checked) {
-      checkeds.push(categoria.value)
+      checkeds.push(e.target.value)
 
       //console.log(checkeds)
 
     } else {
-      checkeds = checkeds.filter(event => event !== categoria.value)
+      checkeds = checkeds.filter(event => event !== e.target.value)
       //console.log(checkeds)
 
     }
     
     if (checkeds.length > 0) {
-      conteinerCard.appendChild(cargarCards(upcomingCard.filter(event => validaEvento(event, checkeds))))
+      cargarCards(upcomingCard.filter(event => validaEvento(event, checkeds)),conteinerCard)
     } else {
-      conteinerCard.appendChild(cargarCards(upcomingCard))
+      cargarCards(upcomingCard,conteinerCard)
     }
   }
 
-  )
   
-});
 
 
 function validaEvento(evento, arregloCategorias) {
@@ -92,40 +93,46 @@ function validaEvento(evento, arregloCategorias) {
 let botonSearch = document.getElementById("buttonSearch");
 let search = document.getElementById("search");
 
-botonSearch.addEventListener("click", function (e) {
-  e.preventDefault()
+search.addEventListener("keyup", buscarTitulo)
+
+function buscarTitulo(e) {
   
-if(search.value!="") {
+  
+if(e.target.value!="") {
   if (checkeds.length > 0) {
     let cardChecked = upcomingCard.filter(event => validaEvento(event, checkeds));
-   // let tituloCard = cardChecked.find(event => event.name.toLowerCase().idexOf(search.value.toLowerCase())!=-1)
-   let tituloCard = cardChecked.find(event => event.name.toLowerCase().search(search.value.toLowerCase())!=-1)
-    if (tituloCard == undefined) {
+    let tituloCard = cardChecked.filter(event => event.name.toLowerCase().search(search.value.toLowerCase().trim())!=-1)
+    if (tituloCard.length == 0) {
       /* let p=document.createElement("p")
        p.textContent="El titulo ingresado no existe"
        conteinerCard.appendChild(p)*/
       alert("El titulo ingresado no existe")
-      conteinerCard.appendChild(cargarCards(cardChecked))
+      cargarCards(cardChecked,conteinerCard)
     }
     else {
-        conteinerCard.appendChild(cargarCards(cardChecked.filter(event => event.name.toLowerCase()==tituloCard.name.toLowerCase())))
+        cargarCards(tituloCard,conteinerCard)
     }
   } else {
-    let tituloCard = upcomingCard.find(event=> event.name.toLowerCase().search(search.value.toLowerCase())!=-1)
+    let tituloCard = upcomingCard.filter(event=> event.name.toLowerCase().search(search.value.toLowerCase().trim())!=-1)
     
     //let tituloCard = upcomingCard.find(event => event.name.toLowerCase() == search.value.toLowerCase())
-    if (tituloCard == undefined) {
+    if (tituloCard.length == 0) {
       /* let p=document.createElement("p")
        p.textContent="El titulo ingresado no existe"
        conteinerCard.appendChild(p)*/
       alert("El titulo ingresado no existe")
-      conteinerCard.appendChild(cargarCards(upcomingCard))
+      cargarCards(upcomingCard,conteinerCard)
     }
     else {
-    conteinerCard.appendChild(cargarCards(upcomingCard.filter(event => event.name.toLowerCase() == tituloCard.name.toLowerCase())))
+    cargarCards(tituloCard,conteinerCard)
     }
   }}else{
-    alert("Debe ingresar algo para la busqueda")
+    if(checkeds.length > 0){
+
+      let cardChecked = upcomingCard.filter(event => validaEvento(event, checkeds));
+      cargarCards(cardChecked,conteinerCard)
+    }
+    else{cargarCards(upcomingCard,conteinerCard)}
   }
-})
+}
 
