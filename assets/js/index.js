@@ -102,8 +102,12 @@ function buscarTitulo(e){
     let cardChecked = dataCards.events.filter(event => validaEvento(event, checkeds));
     let tituloCard = cardChecked.filter(event => event.name.toLowerCase().search(e.target.value.toLowerCase().trim())!=-1)
     if (tituloCard.length==0) {
-      alert("El titulo ingresado no existe")
-      cargarCards(cardChecked,conteinerCard)
+      conteinerCard.innerHTML=""
+      let div=document.createElement("div")
+       div.innerHTML='<p class="bg-black px-2 text-danger display-5">El titulo ingresado no existe</p>'
+       conteinerCard.appendChild(div)
+      /*alert("El titulo ingresado no existe")
+      cargarCards(cardChecked,conteinerCard)*/
     }
     else {
         cargarCards(tituloCard,conteinerCard)
@@ -113,8 +117,12 @@ function buscarTitulo(e){
     let tituloCard = dataCards.events.filter(event=> event.name.toLowerCase().search(e.target.value.toLowerCase().trim())!=-1)
     
     if (tituloCard.length==0) {
-      alert("El titulo ingresado no existe")
-      cargarCards(dataCards.events,conteinerCard)
+      conteinerCard.innerHTML=""
+      let div=document.createElement("div")
+       div.innerHTML='<p class="bg-black px-2 text-danger display-5">El titulo ingresado no existe</p>'
+       conteinerCard.appendChild(div)
+     /* alert("El titulo ingresado no existe")
+      cargarCards(dataCards.events,conteinerCard)*/
     }
     else {
     cargarCards(tituloCard,conteinerCard)

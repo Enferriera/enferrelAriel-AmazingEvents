@@ -23,8 +23,7 @@ function cargarCard(card){
       <div class="card-body">
         <h5 class="card-title text-white">${card.name}</h5>
         <p class="card-text text-white">${card.description}</p>
-        <p class="card-text text-white"><small class="text-muted">Última
-            actualización hace 3 minutos</small></p>
+        
         <ul class="list-group list-group-flush">
           <li class="list-group-item bg-black text-white">Date: ${card.date}</li>
           <li class="list-group-item bg-black text-white">Description: ${card.description}</li>
