@@ -1,12 +1,13 @@
 //GENERAMOS LAS CARD 
 const conteinerCard=document.getElementById("cardHome")
-console.log(dataCards.events[0]._id)
+
 
 cargarCards(dataCards.events,conteinerCard)
 
 
 function cargarCards(events,contenedor){
   conteinerCard.innerHTML=""
+  if(events.length>0){
   let fragmento=document.createDocumentFragment()
  
 for(card of events){
@@ -23,6 +24,12 @@ for(card of events){
   fragmento.appendChild(cardDiv)
 }
 contenedor.appendChild(fragmento)
+}else{
+  let div=document.createElement("div")
+       div.innerHTML='<p class="bg-black px-2 text-danger display-5">The title entered does not exist</p>'
+       contenedor.appendChild(div)
+}
+
 }
 
 //GENERAMOS LAS CATEGORYS
@@ -50,45 +57,19 @@ function cargarCheck(categorias,contenedor){
   contenedor.appendChild(fragmento)
   }
   
+  //Search
 
-  //filtramos las categorys
-let checkbox=document.querySelectorAll("input[type=checkbox]")
+let searched=""
+let cardCheckeadas=[]
+function filtrarCard(checkeado,listCard){
+  console.log("Imprime en funcion: longitud "+checkeado.length)
+  return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
  
- 
-let checkeds=[]
-checkbox.forEach(categoria=>{categoria.addEventListener('change', filtrarCheck)})
-
-function filtrarCheck(e) {
-  if (this.checked) {
-checkeds.push(e.target.value)
-
-console.log(checkeds)
-   
-  } else {
-    checkeds=checkeds.filter(event=>event!==e.target.value)
-   //console.log(checkeds)
-   
-  }
+ }
+ function filterSearch(searchWord,listCard){
+  return searchWord==""?listCard: listCard.filter(event=>event.name.toLowerCase().search(searchWord.toLowerCase().trim())!=-1)
   
-if(checkeds.length>0){
-cargarCards(dataCards.events.filter(event=>validaEvento(event,checkeds)),conteinerCard)
-}else{
-  cargarCards(dataCards.events,conteinerCard)
 }
-} 
-
-
-
-
-
-
-function validaEvento(evento,arregloCategorias){
-return arregloCategorias.find(categoria=>categoria==evento.category.split(" ").join("_"));
-}
-
-
-//Search
-
 
 const search=document.getElementById("search");
 
@@ -97,44 +78,36 @@ search.addEventListener("keyup",buscarTitulo)
 
 function buscarTitulo(e){
 
-  if(e.target.value!=""){
-  if (checkeds.length > 0) {
-    let cardChecked = dataCards.events.filter(event => validaEvento(event, checkeds));
-    let tituloCard = cardChecked.filter(event => event.name.toLowerCase().search(e.target.value.toLowerCase().trim())!=-1)
-    if (tituloCard.length==0) {
-      conteinerCard.innerHTML=""
-      let div=document.createElement("div")
-       div.innerHTML='<p class="bg-black px-2 text-danger display-5">El titulo ingresado no existe</p>'
-       conteinerCard.appendChild(div)
-      /*alert("El titulo ingresado no existe")
-      cargarCards(cardChecked,conteinerCard)*/
-    }
-    else {
-        cargarCards(tituloCard,conteinerCard)
-          
-    }
-  } else {
-    let tituloCard = dataCards.events.filter(event=> event.name.toLowerCase().search(e.target.value.toLowerCase().trim())!=-1)
-    
-    if (tituloCard.length==0) {
-      conteinerCard.innerHTML=""
-      let div=document.createElement("div")
-       div.innerHTML='<p class="bg-black px-2 text-danger display-5">El titulo ingresado no existe</p>'
-       conteinerCard.appendChild(div)
-     /* alert("El titulo ingresado no existe")
-      cargarCards(dataCards.events,conteinerCard)*/
-    }
-    else {
-    cargarCards(tituloCard,conteinerCard)
-
-    }
-  }
-}else{
-  if(checkeds.length > 0){
-
-    let cardChecked = dataCards.events.filter(event => validaEvento(event, checkeds));
-    cargarCards(cardChecked,conteinerCard)
-  }
-  else{cargarCards(dataCards.events,conteinerCard)}
+  searched=e.target.value
+  dobleFiltro(dataCards.events)
+//console.log(searched)
 }
-}
+
+
+
+
+
+  //filtramos las categorys
+let checkbox=document.querySelectorAll("input[type=checkbox]")
+ 
+ 
+
+checkbox.forEach(categoria=>{categoria.addEventListener('change',filtrarCardChecked)})
+
+function filtrarCardChecked() {
+  cardCheckeadas=Array.from(checkbox).filter(check=>check.checked).map(check=>check.value)
+  console.log(cardCheckeadas)
+dobleFiltro(dataCards.events)
+ 
+} 
+
+
+
+function dobleFiltro(arrayCards){
+  let cardChecked=filtrarCard(cardCheckeadas,arrayCards)
+  let cardSearched=filterSearch(searched,cardChecked)
+  cargarCards(cardSearched,conteinerCard)
+  
+  }
+
+
