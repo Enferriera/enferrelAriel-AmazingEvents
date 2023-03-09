@@ -30,7 +30,7 @@ function cargarCard(card){
           <li class="list-group-item bg-black text-white">Category: ${card.category}</li>
           <li class="list-group-item bg-black text-white">Place: ${card.place}</li>
           <li class="list-group-item bg-black text-white">Capacity: ${card.capacity}</li>
-          <li class="list-group-item bg-black text-white">Assistance or estimate: ${card.assistance}</li>
+          <li class="list-group-item bg-black text-white">${Object.keys(card)[8].charAt(0).toUpperCase().concat(Object.keys(card)[8].slice(1))} : ${Object.values(card)[8]}</li>
           <li class="list-group-item bg-black text-white">Price: $ ${card.price}</li>
         </ul>
       </div>
