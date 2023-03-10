@@ -38,29 +38,31 @@ const conteinerCheck=document.getElementById("containerCheck")
 
 
 let categorys=dataCards.events.map(event=>event.category)
-let categorysFiltered=[... new Set(categorys)]
-cargarCheck(categorysFiltered,conteinerCheck)
+let categorysFiltradas=categorys.filter((valor, indice) => {
+  return categorys.indexOf(valor) === indice;
+})
+cargarCheck(categorysFiltradas,conteinerCheck)
 
 
 function cargarCheck(categorias,contenedor){
-  let fragment=document.createDocumentFragment()
+  let fragmento=document.createDocumentFragment()
   for(check of categorias){
     let checkDiv=document.createElement("div")//["museo","comida","cine","Food Fair"]
     checkDiv.classList.add("form-check", "form-check-inline")
        checkDiv.innerHTML=`<input class="form-check-input" type="checkbox" name="category" id=${check.split(" ").join("_")}
        value=${check.split(" ").join("_")}>
      <label class="form-check-label" for=${check.split(" ").join("_")}>${check}</label>`
-    fragment.appendChild(checkDiv)
+    fragmento.appendChild(checkDiv)
   }
-  contenedor.appendChild(fragment)
+  contenedor.appendChild(fragmento)
   }
   
   //Search
 
 let searched=""
-let cardChecked=[]
-function filterCard(checkeado,listCard){
-  //console.log("Imprime en funcion: longitud "+checkeado.length)
+let cardCheckeadas=[]
+function filtrarCard(checkeado,listCard){
+  console.log("Imprime en funcion: longitud "+checkeado.length)
   return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
  
  }
@@ -71,13 +73,13 @@ function filterCard(checkeado,listCard){
 
 const search=document.getElementById("search");
 
-search.addEventListener("keyup",findName)
+search.addEventListener("keyup",buscarTitulo)
 
 
-function findName(e){
+function buscarTitulo(e){
 
   searched=e.target.value
-  crossFilter(dataCards.events)
+  dobleFiltro(dataCards.events)
 //console.log(searched)
 }
 
@@ -90,20 +92,20 @@ let checkbox=document.querySelectorAll("input[type=checkbox]")
  
  
 
-checkbox.forEach(categoria=>{categoria.addEventListener('change',filterChecked)})
+checkbox.forEach(categoria=>{categoria.addEventListener('change',filtrarCardChecked)})
 
-function filterChecked() {
-  cardChecked=Array.from(checkbox).filter(check=>check.checked).map(check=>check.value)
- // console.log(cardCheckeadas)
-crossFilter(dataCards.events)
+function filtrarCardChecked() {
+  cardCheckeadas=Array.from(checkbox).filter(check=>check.checked).map(check=>check.value)
+  console.log(cardCheckeadas)
+dobleFiltro(dataCards.events)
  
 } 
 
 
 
-function crossFilter(arrayCards){
-  let cardCheck=filterCard(cardChecked,arrayCards)
-  let cardSearched=filterSearch(searched,cardCheck)
+function dobleFiltro(arrayCards){
+  let cardChecked=filtrarCard(cardCheckeadas,arrayCards)
+  let cardSearched=filterSearch(searched,cardChecked)
   cargarCards(cardSearched,conteinerCard)
   
   }
