@@ -1,16 +1,26 @@
-const queryString=location.search
+const conteinerCard=document.getElementById("conteinerCard")
+const url="https://mindhub-xj03.onrender.com/api/amazing"
+async function getInfo(urlApi,conteiner){
+  try{
+    const response= await fetch(urlApi)
+     let data= await response.json()
+  console.log(data)
+  const queryString=location.search
+  const params= new URLSearchParams(queryString)
+  const id=params.get("id")
+  const card=data.events.find(event=>event._id==id)
 
-const params= new URLSearchParams(queryString)
-const id=params.get("id")
+cargarCard(card,conteiner)
+}catch(error){
+    console.log(error.message)
+  }
+  }
+getInfo(url,conteinerCard)
 
 
-const card=dataCards.events.find(event=>event._id==id)
-
-cargarCard(card)
-
-function cargarCard(card){
+function cargarCard(card,conteiner){
     
-    const conteinerCard=document.getElementById("conteinerCard")
+    
    
     let cardDiv=document.createElement("div")
     cardDiv.classList.add("row", "g-0")
@@ -37,5 +47,5 @@ function cargarCard(card){
     </div>`
   
   
-  conteinerCard.appendChild(cardDiv)
+  conteiner.appendChild(cardDiv)
   }

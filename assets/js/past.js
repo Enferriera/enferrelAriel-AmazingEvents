@@ -1,17 +1,55 @@
-//GENERAMOS LAS CARD FILTRANDO POR FECHA
-let fechaActual= new Date(dataCards.currentDate)
 let conteinerCard=document.getElementById("cardPast")
-let pastCard=dataCards.events.filter(event=>comparaFecha(fechaActual,event))
-function comparaFecha(fechaActual,fechaEvento){
-  let fechaEvent= new Date(fechaEvento.date)
-  return fechaEvent<fechaActual
+const url="https://mindhub-xj03.onrender.com/api/amazing"
+
+async function getInfo(urlApi,container){
+try{
+  const response= await fetch(urlApi)
+   let data= await response.json()
+console.log(data)
+//GENERAMOS LAS CARD FILTRANDO POR FECHA
+let pastCard = data.events.filter(event => new Date(data.currentDate)> new Date(event.date))
+console.log(pastCard.length)
+cargarCards(pastCard,container)
+//GENERAMOS LOS CHECK 
+let containerCheck = document.getElementById("pastCheck")
+let categorysFilter = [... new Set(pastCard.map(event=>event.category))]
+console.log(categorysFilter)
+cargarCheck(categorysFilter, containerCheck);
+
+//filtramos las categorys y Search
+let searched = ""
+let cardChecked = []
+  
+const search = document.getElementById("search");
+
+search.addEventListener("keyup", findName)
+
+
+function findName(e) {
+  searched = e.target.value
+  crossFilter(pastCard,cardChecked,searched)
 }
 
+let checkbox = document.querySelectorAll("input[type=checkbox]")
 
 
 
-cargarCards(pastCard,conteinerCard)
+checkbox.forEach(categoria => { categoria.addEventListener('change', filterChecked) })
 
+function filterChecked() {
+  cardChecked = Array.from(checkbox).filter(check => check.checked).map(check => check.value)
+  crossFilter(pastCard,cardChecked,searched)
+
+}
+}catch(error){
+  console.log(error.message)
+}
+}
+
+getInfo(url,conteinerCard)
+
+
+//GENERAMOS LAS CARD FILTRANDO POR FECHA
 
 function cargarCards(pastCard,contenedor){
   conteinerCard.innerHTML=""
@@ -39,12 +77,7 @@ function cargarCards(pastCard,contenedor){
 }
   }
 
-  //GENERAMOS LOS CHECK 
-let conteinerCheck=document.getElementById("pastCheck")
-let categorysFilter=[... new Set(pastCard)].map(event=>event.category)
-
-cargarCheck(categorysFilter,conteinerCheck)
-
+  //GENERAMOS LOS CHECK
 
 function cargarCheck(categorys,conteiner){
   let fragmento=document.createDocumentFragment()
@@ -59,18 +92,24 @@ function cargarCheck(categorys,conteiner){
   conteiner.appendChild(fragmento)
   }
 
-
+  function crossFilter(arrayCards,checked,searcheds) {
+    let cardCheck = filterCard(checked, arrayCards)
+    let cardSearched = filterSearch(searcheds, cardCheck)
+    cargarCards(cardSearched, conteinerCard)
+  
+  }
+  function filterCard(checkeado,listCard){
+    return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
+ }
+ function filterSearch(searchWord,listCard){
+  return searchWord==""?listCard: listCard.filter(event=>event.name.toLowerCase().search(searchWord.toLowerCase().trim())!=-1)
+  
+}
+/*
   //Search
 
  let searched=""
  let cardChecked=[]
- function filterCard(checkeado,listCard){
-     return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
-  }
-  function filterSearch(searchWord,listCard){
-   return searchWord==""?listCard: listCard.filter(event=>event.name.toLowerCase().search(searchWord.toLowerCase().trim())!=-1)
-   
- }
  
  const search=document.getElementById("search");
  
@@ -108,3 +147,5 @@ function cargarCheck(categorys,conteiner){
    cargarCards(cardSearched,conteinerCard)
    
    }
+
+*/

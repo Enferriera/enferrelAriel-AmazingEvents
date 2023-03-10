@@ -1,9 +1,52 @@
-//GENERAMOS LAS CARD 
 const conteinerCard=document.getElementById("cardHome")
+const url="https://mindhub-xj03.onrender.com/api/amazing"
+
+async function getInfo(urlApi,container){
+try{
+  const response= await fetch(urlApi)
+   let data= await response.json()
+console.log(data)
+//GENERAMOS LAS CARD FILTRANDO POR FECHA
+
+cargarCards(data.events,container)
+//GENERAMOS LOS CHECK 
+let containerCheck = document.getElementById("containerCheck")
+let categorysFilter = [... new Set(data.events.map(event=>event.category))]
+console.log(categorysFilter)
+cargarCheck(categorysFilter, containerCheck);
+
+//filtramos las categorys y Search
+let searched = ""
+let cardChecked = []
+  
+const search = document.getElementById("search");
+
+search.addEventListener("keyup", findName)
 
 
-cargarCards(dataCards.events,conteinerCard)
+function findName(e) {
+  searched = e.target.value
+  crossFilter(data.events,cardChecked,searched)
+}
 
+let checkbox = document.querySelectorAll("input[type=checkbox]")
+
+
+
+checkbox.forEach(categoria => { categoria.addEventListener('change', filterChecked) })
+
+function filterChecked() {
+  cardChecked = Array.from(checkbox).filter(check => check.checked).map(check => check.value)
+  crossFilter(data.events,cardChecked,searched)
+
+}
+}catch(error){
+  console.log(error.message)
+}
+}
+
+getInfo(url,conteinerCard)
+//GENERAMOS LAS CARD 
 
 function cargarCards(events,contenedor){
   conteinerCard.innerHTML=""
@@ -33,15 +76,7 @@ contenedor.appendChild(fragmento)
 }
 
 //GENERAMOS LAS CATEGORYS
-const conteinerCheck=document.getElementById("containerCheck")
-
-
-
-let categorys=dataCards.events.map(event=>event.category)
-let categorysFiltered=[... new Set(categorys)]
-cargarCheck(categorysFiltered,conteinerCheck)
-
-
+//const conteinerCheck=document.getElementById("containerCheck")
 function cargarCheck(categorias,contenedor){
   let fragment=document.createDocumentFragment()
   for(check of categorias){
@@ -57,10 +92,8 @@ function cargarCheck(categorias,contenedor){
   
   //Search
 
-let searched=""
-let cardChecked=[]
+
 function filterCard(checkeado,listCard){
-  //console.log("Imprime en funcion: longitud "+checkeado.length)
   return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
  
  }
@@ -69,43 +102,10 @@ function filterCard(checkeado,listCard){
   
 }
 
-const search=document.getElementById("search");
+function crossFilter(arrayCards,checked,searcheds) {
+  let cardCheck = filterCard(checked, arrayCards)
+  let cardSearched = filterSearch(searcheds, cardCheck)
+  cargarCards(cardSearched, conteinerCard)
 
-search.addEventListener("keyup",findName)
-
-
-function findName(e){
-
-  searched=e.target.value
-  crossFilter(dataCards.events)
-//console.log(searched)
 }
-
-
-
-
-
-  //filtramos las categorys
-let checkbox=document.querySelectorAll("input[type=checkbox]")
- 
- 
-
-checkbox.forEach(categoria=>{categoria.addEventListener('change',filterChecked)})
-
-function filterChecked() {
-  cardChecked=Array.from(checkbox).filter(check=>check.checked).map(check=>check.value)
- // console.log(cardCheckeadas)
-crossFilter(dataCards.events)
- 
-} 
-
-
-
-function crossFilter(arrayCards){
-  let cardCheck=filterCard(cardChecked,arrayCards)
-  let cardSearched=filterSearch(searched,cardCheck)
-  cargarCards(cardSearched,conteinerCard)
-  
-  }
-
 
