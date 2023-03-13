@@ -1,12 +1,18 @@
 
 const url="https://mindhub-xj03.onrender.com/api/amazing"
-const containerTable1=document.getElementById("tr-event")
-async function getInfo(urlApi,container=""){
+
+async function getInfo(urlApi){
     try{
       const response= await fetch(urlApi)
        let data= await response.json()
-    let arrayAssistanc=sortByAssistanceDesc(data.events)
-    cargarPrimerTabla(arrayAssistanc,containerTable1)
+       const containerTable1=document.getElementById("tb-event-stats")
+       const containerTbUpcoming=document.getElementById("tb-upcomming")
+       const containerTbPast=document.getElementById("tb-pastEvents")
+      cargarTablaResumen(data.events,containerTable1)
+      let upcommingEvents=data.events.filter(event=> new Date(event.date)> new Date(data.currentDate))
+      cargarTablaEstadistica(upcommingEvents,containerTbUpcoming)
+      let pastEvents=data.events.filter(event=> new Date(event.date)< new Date(data.currentDate))
+      cargarTablaEstadistica(pastEvents,containerTbPast)
     }catch(error){
         console.log(error.message)
       }
@@ -14,36 +20,60 @@ async function getInfo(urlApi,container=""){
 
     getInfo(url)
       
-    function sortByAssistanceDesc(arrayCards){
-        return arrayCards.filter(event=>event.assistance).sort((a,b)=>{
-        
-            if ((a.assistance/a.capacity) > (b.assistance/b.capacity)) {
-                return -1;
-              }
-              if ((a.assistance/a.capacity) < (b.assistance/b.capacity)) {
-                return 1;
-              }
-              // a debe ser igual b
-              return 0;
-        })
-
+    function revenues(arrayCard,categoria){
+      let sumRevenues=0
+      let arrayByCategory=arrayCard.filter(event=>event.category==categoria)
+      arrayByCategory.forEach(event=> event.assistance==undefined? sumRevenues+=event.price * event.estimate:sumRevenues+=event.price * event.assistance)
+      return Math.round(sumRevenues/arrayByCategory.length)      
+      
     }
 
-    function cargarPrimerTabla(arrayCards,contenedor){
+    function percentAttendance(arrayCard,categoria){
+      let sumPercentage=0
+      let arrayByCategory=arrayCard.filter(event=>event.category==categoria)
+      arrayByCategory.forEach(event=> event.assistance==undefined? sumPercentage+=event.estimate/event.capacity:sumPercentage+=event.assistance/event.capacity)
+
+      return Math.round(sumPercentage*100/arrayByCategory.length)
+    }
+    
+    function cargarTablaResumen(arrayCards,contenedor){
         contenedor.innerHTML=""
-        let dimensionArray=arrayCards.length
-        console.log(dimensionArray)
+        let eventMoreAssistance=arrayCards.filter(event=>event.assistance).reduce((a,b)=>{
+          if(a.assistance/a.capacity> b.assistance/b.capacity) return a
+          return b
+      })
+      let eventLessAssistance= arrayCards.filter(event=>event.assistance).reduce((a,b)=>{
+        if(a.assistance/a.capacity > b.assistance/b.capacity) return b
+        return a
+    })
+        let eventMoreCapacity= arrayCards.reduce((a,b)=>{
+          if(a.capacity > b.capacity) return a
+          return b
+      })
         let fragment=document.createDocumentFragment()
-        let tdMayorAssist=document.createElement("td")
-        tdMayorAssist.innerHTML=`${arrayCards[0].name} : ${arrayCards[0].assistance/arrayCards[0].capacity*100} %`
-        fragment.appendChild(tdMayorAssist)
-        let tdMenorAssist=document.createElement("td")
-        tdMenorAssist.innerHTML=`${arrayCards[arrayCards.length-1].name} : ${arrayCards[(dimensionArray-1)].assistance/arrayCards[(dimensionArray-1)].capacity*100} %`
-        fragment.appendChild(tdMenorAssist)
-        let tdMayorCapacity=document.createElement("td")
-        let mayorCapacity=arrayCards.map(event=>event.capacity).sort(( a, b )=> a - b )[dimensionArray-1]
-        console.log(mayorCapacity)
-        tdMayorCapacity.innerHTML=`${arrayCards.find(event=>event.capacity==mayorCapacity).name}:${mayorCapacity}`
-        fragment.appendChild(tdMayorCapacity)
+        let trTable1=document.createElement("tr")
+        trTable1.innerHTML=`<td class="text-center">${eventMoreAssistance.name} : ${eventMoreAssistance.assistance/eventMoreAssistance.capacity*100} %</td>
+        <td class="text-center">${eventLessAssistance.name} : ${eventLessAssistance.assistance/eventLessAssistance.capacity*100} %</td>
+        <td class="text-center">${eventMoreCapacity.name} : ${eventMoreCapacity.capacity}</td>`
+        fragment.appendChild(trTable1)
         contenedor.appendChild(fragment)
     }
+
+function cargarTablaEstadistica(arrayCards,contenedor){
+  contenedor.innerHTM=""
+
+  let fragment=document.createDocumentFragment()
+  
+  let categorys=[... new Set(arrayCards.map(event=>event.category))].sort()
+
+  for(cat of categorys){
+    let row=document.createElement("tr")
+    row.classList.add("text-center")
+    row.innerHTML=`<td class="text-center col-4">${cat}</td>
+    <td class="text-center col-4">$ ${revenues(arrayCards,cat)}</td>
+    <td class="text-center col-4">${percentAttendance(arrayCards,cat)}%</td>`
+
+fragment.appendChild(row)
+  }
+  contenedor.appendChild(fragment)
+}
