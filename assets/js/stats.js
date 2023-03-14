@@ -21,19 +21,20 @@ async function getInfo(urlApi){
     getInfo(url)
       
     function revenues(arrayCard,categoria){
-      let sumRevenues=0
+    
       let arrayByCategory=arrayCard.filter(event=>event.category==categoria)
-      arrayByCategory.forEach(event=> event.assistance==undefined? sumRevenues+=event.price * event.estimate:sumRevenues+=event.price * event.assistance)
-      return Math.round(sumRevenues/arrayByCategory.length)      
+      let sumaGanancia=arrayByCategory.reduce((total,event)=>{event.assistance==undefined?total+=(event.estimate*event.price):total+=(event.assistance*event.price)
+     
+        return total},0)
+      return sumaGanancia      
       
     }
 
     function percentAttendance(arrayCard,categoria){
-      let sumPercentage=0
       let arrayByCategory=arrayCard.filter(event=>event.category==categoria)
-      arrayByCategory.forEach(event=> event.assistance==undefined? sumPercentage+=event.estimate/event.capacity:sumPercentage+=event.assistance/event.capacity)
-
-      return Math.round(sumPercentage*100/arrayByCategory.length)
+      let sumaCapacidad=arrayByCategory.reduce((total,event)=>{event.assistance==undefined?total+=(event.estimate/event.capacity):total+=(event.assistance/event.capacity)
+             return total},0)
+      return (sumaCapacidad*100/arrayByCategory.length).toFixed(2)
     }
     
     function cargarTablaResumen(arrayCards,contenedor){
@@ -52,8 +53,8 @@ async function getInfo(urlApi){
       })
         let fragment=document.createDocumentFragment()
         let trTable1=document.createElement("tr")
-        trTable1.innerHTML=`<td class="text-center">${eventMoreAssistance.name} : ${eventMoreAssistance.assistance/eventMoreAssistance.capacity*100} %</td>
-        <td class="text-center">${eventLessAssistance.name} : ${eventLessAssistance.assistance/eventLessAssistance.capacity*100} %</td>
+        trTable1.innerHTML=`<td class="text-center">${eventMoreAssistance.name} : ${(eventMoreAssistance.assistance/eventMoreAssistance.capacity*100).toFixed(2)} %</td>
+        <td class="text-center">${eventLessAssistance.name} : ${(eventLessAssistance.assistance/eventLessAssistance.capacity*100).toFixed(2)} %</td>
         <td class="text-center">${eventMoreCapacity.name} : ${eventMoreCapacity.capacity}</td>`
         fragment.appendChild(trTable1)
         contenedor.appendChild(fragment)
