@@ -21,13 +21,10 @@ async function getInfo(urlApi){
     getInfo(url)
       
     function revenues(arrayCard,categoria){
-    
       let arrayByCategory=arrayCard.filter(event=>event.category==categoria)
       let sumaGanancia=arrayByCategory.reduce((total,event)=>{event.assistance==undefined?total+=(event.estimate*event.price):total+=(event.assistance*event.price)
-     
         return total},0)
       return sumaGanancia      
-      
     }
 
     function percentAttendance(arrayCard,categoria){
@@ -62,18 +59,14 @@ async function getInfo(urlApi){
 
 function cargarTablaEstadistica(arrayCards,contenedor){
   contenedor.innerHTM=""
-
   let fragment=document.createDocumentFragment()
-  
   let categorys=[... new Set(arrayCards.map(event=>event.category))].sort()
-
   for(cat of categorys){
     let row=document.createElement("tr")
     row.classList.add("text-center")
     row.innerHTML=`<td class="text-center col-4">${cat}</td>
     <td class="text-center col-4">$ ${revenues(arrayCards,cat)}</td>
     <td class="text-center col-4">${percentAttendance(arrayCards,cat)}%</td>`
-
 fragment.appendChild(row)
   }
   contenedor.appendChild(fragment)

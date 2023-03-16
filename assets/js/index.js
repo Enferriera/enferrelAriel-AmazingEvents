@@ -1,111 +1,97 @@
-const conteinerCard=document.getElementById("cardHome")
-const url="https://mindhub-xj03.onrender.com/api/amazing"
+const conteinerCard = document.getElementById("cardHome")
+const url = "https://mindhub-xj03.onrender.com/api/amazing"
 
-async function getInfo(urlApi,container){
-try{
-  const response= await fetch(urlApi)
-   let data= await response.json()
-console.log(data)
-//GENERAMOS LAS CARD FILTRANDO POR FECHA
-
-cargarCards(data.events,container)
-//GENERAMOS LOS CHECK 
-let containerCheck = document.getElementById("containerCheck")
-let categorysFilter = [... new Set(data.events.map(event=>event.category))]
-console.log(categorysFilter)
-cargarCheck(categorysFilter, containerCheck);
-
-//filtramos las categorys y Search
-let searched = ""
-let cardChecked = []
-  
-const search = document.getElementById("search");
-
-search.addEventListener("keyup", findName)
-
-
-function findName(e) {
-  searched = e.target.value
-  crossFilter(data.events,cardChecked,searched)
+async function getInfo(urlApi, container) {
+  try {
+    const response = await fetch(urlApi)
+    let data = await response.json()
+    console.log(data)
+    //GENERAMOS LAS CARD FILTRANDO POR FECHA
+    cargarCards(data.events, container)
+    //GENERAMOS LOS CHECK 
+    let containerCheck = document.getElementById("containerCheck")
+    let categorysFilter = [... new Set(data.events.map(event => event.category))]
+    console.log(categorysFilter)
+    cargarCheck(categorysFilter, containerCheck);
+    //filtramos las categorys y Search
+    let searched = ""
+    let cardChecked = []
+    const search = document.getElementById("search");
+    search.addEventListener("keyup", (e) => {
+      searched = e.target.value
+      crossFilter(data.events, cardChecked, searched)
+    })
+    let checkbox = document.querySelectorAll("input[type=checkbox]")
+    checkbox.forEach(categoria => {
+      categoria.addEventListener('change', () => {
+        cardChecked = Array.from(checkbox).filter(check => check.checked).map(check => check.value)
+        crossFilter(data.events, cardChecked, searched)
+      })
+    })
+  } catch (error) {
+    console.log(error.message)
+  }
 }
 
-let checkbox = document.querySelectorAll("input[type=checkbox]")
+getInfo(url, conteinerCard)
 
-
-
-checkbox.forEach(categoria => { categoria.addEventListener('change', filterChecked) })
-
-function filterChecked() {
-  cardChecked = Array.from(checkbox).filter(check => check.checked).map(check => check.value)
-  crossFilter(data.events,cardChecked,searched)
-
-}
-}catch(error){
-  console.log(error.message)
-}
-}
-
-getInfo(url,conteinerCard)
 //GENERAMOS LAS CARD 
-
-function cargarCards(events,contenedor){
-  conteinerCard.innerHTML=""
-  if(events.length>0){
-  let fragmento=document.createDocumentFragment()
- 
-for(card of events){
-  let cardDiv=document.createElement("div")
-  cardDiv.classList.add("card", "mb-3")
-  cardDiv.style.width="25rem"
-  cardDiv.innerHTML=`<img src=${card.image} class="card-img-top h-50 border-bottom" alt=${card.name.split(" ").join("_")}>
+function cargarCards(events, contenedor) {
+  conteinerCard.innerHTML = ""
+  if (events.length > 0) {
+    let fragmento = document.createDocumentFragment()
+    for (card of events) {
+      let cardDiv = document.createElement("div")
+      cardDiv.classList.add("card", "mb-3")
+      cardDiv.style.width = "25rem"
+      cardDiv.innerHTML = `<img src=${card.image} class="card-img-top h-50 border-bottom" alt=${card.name.split(" ").join("_")}>
   <div class="card-body d-flex flex-column bg-black">
     <h5 class="card-title text-white">${card.name}</h5>
    <p class="text-white">${card.description}</p>
    <p class="text-white">$ ${card.price}</p>
     <a href="./details.html?id=${card._id}" class="btn text-white  color-btn align-self-end">Ver más</a>
   </div>`
-  fragmento.appendChild(cardDiv)
-}
-contenedor.appendChild(fragmento)
-}else{
-  let div=document.createElement("div")
-       div.innerHTML='<p class="bg-black px-2 text-danger display-5">The title entered does not exist</p>'
-       contenedor.appendChild(div)
-}
+      fragmento.appendChild(cardDiv)
+    }
+    contenedor.appendChild(fragmento)
+  } else {
+    let div = document.createElement("div")
+    div.innerHTML = '<p class="bg-black px-2 text-danger display-5">The title entered does not exist</p>'
+    contenedor.appendChild(div)
+  }
 
 }
 
 //GENERAMOS LAS CATEGORYS
 //const conteinerCheck=document.getElementById("containerCheck")
-function cargarCheck(categorias,contenedor){
-  let fragment=document.createDocumentFragment()
-  for(check of categorias){
-    let checkDiv=document.createElement("div")//["museo","comida","cine","Food Fair"]
+function cargarCheck(categorias, contenedor) {
+  let fragment = document.createDocumentFragment()
+  for (check of categorias) {
+    let checkDiv = document.createElement("div")//["museo","comida","cine","Food Fair"]
     checkDiv.classList.add("form-check", "form-check-inline")
-       checkDiv.innerHTML=`<input class="form-check-input" type="checkbox" name="category" id=${check.split(" ").join("_")}
+    checkDiv.innerHTML = `<input class="form-check-input" type="checkbox" name="category" id=${check.split(" ").join("_")}
        value=${check.split(" ").join("_")}>
      <label class="form-check-label" for=${check.split(" ").join("_")}>${check}</label>`
     fragment.appendChild(checkDiv)
   }
   contenedor.appendChild(fragment)
-  }
-  
-  //Search
-
-
-function filterCard(checkeado,listCard){
-  return checkeado.length>0?listCard.filter(event=>checkeado.includes(event.category.replace(" ","_"))):listCard
- 
- }
- function filterSearch(searchWord,listCard){
-  return searchWord==""?listCard: listCard.filter(event=>event.name.toLowerCase().search(searchWord.toLowerCase().trim())!=-1)
-  
 }
 
-function crossFilter(arrayCards,checked,searcheds) {
+//Search
+
+
+function filterCard(checkeado, listCard) {
+  return checkeado.length > 0 ? listCard.filter(event => checkeado.includes(event.category.replace(" ", "_"))) : listCard
+
+}
+function filterSearch(searchWord, listCard) {
+  return searchWord == "" ? listCard : listCard.filter(event => event.name.toLowerCase().search(searchWord.toLowerCase().trim()) != -1)
+
+}
+
+function crossFilter(arrayCards, checked, searcheds) {
   let cardCheck = filterCard(checked, arrayCards)
   let cardSearched = filterSearch(searcheds, cardCheck)
   cargarCards(cardSearched, conteinerCard)
-
 }
 
